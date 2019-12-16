@@ -27,7 +27,9 @@ namespace training_diary_API.Controllers
 
             try
             {
-                person = await _context.Person.Where(person => person.Email == email).FirstOrDefaultAsync();
+                person = await _context.Person
+                    .Where(person => person.Email == email)
+                    .FirstOrDefaultAsync();
             }
             catch (Exception e)
             {
@@ -52,14 +54,14 @@ namespace training_diary_API.Controllers
             }
         }
 
-        [HttpDelete("{email}")]
-        public async void Delete(string email)
+        [HttpDelete("{id}")]
+        public async void Delete(int id)
         {
+            Person person = new Person();
+            person.IdPerson = id;
+
             try
             {
-                Person person = await _context.Person
-                    .Where(person => person.Email == email)
-                    .FirstOrDefaultAsync();
                 _context.Person.Remove(person);
                 await _context.SaveChangesAsync();
             }
