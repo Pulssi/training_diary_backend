@@ -19,7 +19,7 @@ namespace training_diary_API.Controllers
         }
 
         // GET: api/Meal/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";

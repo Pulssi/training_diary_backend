@@ -22,7 +22,7 @@ namespace training_diary_API.Controllers
             personController = new PersonController(context);
         }
 
-        [HttpGet("{email}", Name = "Get")]
+        [HttpGet("{email}")]
         public async Task<IEnumerable<Weight>> Get(string email)
         {
             IEnumerable<Weight> weights;
@@ -43,7 +43,6 @@ namespace training_diary_API.Controllers
             return weights;
         }
 
-        // POST: api/Weight
         [HttpPost]
         public async void Post([FromBody] Weight weight)
         {
@@ -59,7 +58,6 @@ namespace training_diary_API.Controllers
             }
         }
 
-        // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public async void Delete(int id)
         {

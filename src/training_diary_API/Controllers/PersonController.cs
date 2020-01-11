@@ -20,7 +20,7 @@ namespace training_diary_API.Controllers
             _context = context;
         }
 
-        [HttpGet("{email}", Name = "Get")]
+        [HttpGet("{email}")]
         public async Task<Person> Get(string email)
         {
             Person person;
