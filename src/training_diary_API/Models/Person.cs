@@ -16,8 +16,8 @@ namespace training_diary_API.Models
         public string UserName { get; set; }
         public string Email { get; set; }
 
-        public virtual ICollection<GymSet> GymSet { get; set; }
-        public virtual ICollection<Meal> Meal { get; set; }
-        public virtual ICollection<Weight> Weight { get; set; }
+        public virtual ICollection<GymSet> GymSet { get; }
+        public virtual ICollection<Meal> Meal { get; }
+        public virtual ICollection<Weight> Weight { get; }
     }
 }

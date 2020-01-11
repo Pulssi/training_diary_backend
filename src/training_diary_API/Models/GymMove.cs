@@ -16,6 +16,6 @@ namespace training_diary_API.Models
         public string MoveDescription { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<GymSet> GymSet { get; set; }
+        public virtual ICollection<GymSet> GymSet { get; }
     }
 }

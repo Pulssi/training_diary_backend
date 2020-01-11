@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using training_diary_API.DTOs;
 using training_diary_API.Models;
 
 namespace training_diary_API.Controllers
@@ -15,28 +17,45 @@ namespace training_diary_API.Controllers
     {
         private training_diary_dbContext _context;
 
+        // Typed lambda expression for Select() method. 
+        private static readonly Expression<Func<Person, PersonDto>> AsPersonDto =
+            x => new PersonDto
+            {
+                IdPerson = x.IdPerson,
+                UserName = x.UserName,
+                Email = x.Email,
+            };
+
         public PersonController(training_diary_dbContext context)
         {
             _context = context;
         }
 
         [HttpGet("{email}")]
-        public async Task<Person> Get(string email)
+        public async Task<ActionResult<PersonDto>> Get(string email)
         {
-            Person person;
+            PersonDto personDto;
 
             try
             {
-                person = await _context.Person
+                personDto = await _context.Person
                     .Where(person => person.Email == email)
-                    .FirstOrDefaultAsync();
+                    .Select(AsPersonDto)
+                    .FirstOrDefaultAsync()
+                    .ConfigureAwait(true);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 throw;
             }
-            return person;
+
+            if(personDto == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(personDto);
         }
 
         [HttpPost]
@@ -45,7 +64,7 @@ namespace training_diary_API.Controllers
             try
             {
                 _context.Person.Add(personData);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync().ConfigureAwait(true);
             }
             catch (Exception e)
             {
@@ -63,7 +82,7 @@ namespace training_diary_API.Controllers
             try
             {
                 _context.Person.Remove(person);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync().ConfigureAwait(true);
             }
             catch (Exception e)
             {

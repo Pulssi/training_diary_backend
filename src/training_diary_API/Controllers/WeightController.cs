@@ -14,25 +14,23 @@ namespace training_diary_API.Controllers
     public class WeightController : ControllerBase
     {
         private training_diary_dbContext _context;
-        private PersonController personController;
 
         public WeightController(training_diary_dbContext context)
         {
             _context = context;
-            personController = new PersonController(context);
         }
 
         [HttpGet("{email}")]
-        public async Task<IEnumerable<Weight>> Get(string email)
+        public async Task<ActionResult<IEnumerable<Weight>>> Get(string email)
         {
             IEnumerable<Weight> weights;
 
             try
             {
-                Person person = await personController.Get(email);
                 weights = await _context.Weight
-                    .Where(weight => weight.IdPerson == person.IdPerson)
-                    .ToListAsync();
+                    .Where(weight => weight.IdPersonNavigation.Email == email)
+                    .ToListAsync()
+                    .ConfigureAwait(true);
             }
             catch (Exception e)
             {
@@ -40,7 +38,7 @@ namespace training_diary_API.Controllers
                 throw;
             }
 
-            return weights;
+            return Ok(weights);
         }
 
         [HttpPost]
@@ -49,7 +47,7 @@ namespace training_diary_API.Controllers
             try
             {
                 _context.Add(weight);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync().ConfigureAwait(true);
             }
             catch (Exception e)
             {
@@ -67,7 +65,7 @@ namespace training_diary_API.Controllers
             try
             {
                 _context.Weight.Remove(weight);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync().ConfigureAwait(true);
             }
             catch (Exception e)
             {
