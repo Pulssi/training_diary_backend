@@ -24,11 +24,21 @@ namespace training_diary_API
             Configuration = configuration;
         }
 
+        readonly string AllowAllOrigins = "_AllowAllOrigins";
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(AllowAllOrigins,
+                builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyHeader();
+                });
+            });
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -38,6 +48,7 @@ namespace training_diary_API
                 options.Authority = $"https://{Configuration["Auth0:Domain"]}/";
                 options.Audience = Configuration["Auth0:Audience"];
             });
+
             services.AddControllers();
             services.AddDbContext<training_diary_dbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("TrainingDiaryDatabase")));
@@ -56,6 +67,8 @@ namespace training_diary_API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(AllowAllOrigins);
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
