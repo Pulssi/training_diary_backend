@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using training_diary_API.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace training_diary_API
 {
@@ -28,6 +29,15 @@ namespace training_diary_API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = $"https://{Configuration["Auth0:Domain"]}/";
+                options.Audience = Configuration["Auth0:Audience"];
+            });
             services.AddControllers();
             services.AddDbContext<training_diary_dbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("TrainingDiaryDatabase")));
@@ -61,6 +71,7 @@ namespace training_diary_API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

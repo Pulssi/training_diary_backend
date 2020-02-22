@@ -8,11 +8,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using training_diary_API.DTOs;
 using training_diary_API.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace training_diary_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PersonController : ControllerBase
     {
         private training_diary_dbContext _context;
