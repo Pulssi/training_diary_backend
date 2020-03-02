@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text.Json.Serialization;
 
 namespace training_diary_API.Models
@@ -14,7 +15,6 @@ namespace training_diary_API.Models
         public DateTime Timestamp { get; set; }
 
         public virtual GymMove IdGymMoveNavigation { get; set; }
-        [JsonIgnore]
         public virtual Person IdPersonNavigation { get; set; }
     }
 }

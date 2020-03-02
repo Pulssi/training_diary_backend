@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using training_diary_API.DTOs;
+using training_diary_API.Models;
 
 namespace training_diary_API.Controllers
 {
@@ -13,36 +17,54 @@ namespace training_diary_API.Controllers
     [Authorize]
     public class GymSetController : ControllerBase
     {
-        // GET: api/GymSet
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private training_diary_dbContext _context;
+
+        // Typed lambda expression for Select() method. 
+        private static readonly Expression<Func<GymSet, GymSetDto>> AsGymSetDto =
+            x => new GymSetDto
+            {
+                IdGymMove = x.IdGymMove,
+                IdGymSet = x.IdGymSet,
+                IdPerson = x.IdPerson,
+                Repetitions = x.Repetitions,
+                SetWeight = x.SetWeight,
+                Timestamp = x.Timestamp,
+                GymMoveNavigation = x.IdGymMoveNavigation
+            };
+
+        public GymSetController(training_diary_dbContext context)
         {
-            return new string[] { "value1", "value2" };
+            _context = context;
         }
 
-        // GET: api/GymSet/5
+        /// <summary>Returns all the gym sets found that has the specified user ID.</summary>
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<List<GymSetDto>>> Get(int id)
         {
-            return "value";
+            List<GymSetDto> gymSetDtos;
+
+            try
+            {
+                gymSetDtos = await _context.GymSet
+                    .Where(g => g.IdPerson == id)
+                    .Include(g => g.IdGymMoveNavigation)
+                    .Select(AsGymSetDto)
+                    .ToListAsync()
+                    .ConfigureAwait(true);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            if (gymSetDtos.Count < 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(gymSetDtos);
         }
 
-        // POST: api/GymSet
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT: api/GymSet/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
