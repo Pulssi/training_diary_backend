@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace training_diary_API.Models
+namespace trainingDiaryBackend.Models
 {
     public partial class GymMove
     {

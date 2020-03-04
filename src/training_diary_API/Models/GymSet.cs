@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text.Json.Serialization;
 
-namespace training_diary_API.Models
+namespace trainingDiaryBackend.Models
 {
     public partial class GymSet
     {

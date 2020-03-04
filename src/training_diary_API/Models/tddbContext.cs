@@ -3,15 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 
-namespace training_diary_API.Models
+namespace trainingDiaryBackend.Models
 {
-    public partial class training_diary_dbContext : DbContext
+    public partial class tddbContext : DbContext
     {
-        public training_diary_dbContext()
+        public tddbContext()
         {
         }
 
-        public training_diary_dbContext(DbContextOptions<training_diary_dbContext> options)
+        public tddbContext(DbContextOptions<tddbContext> options)
             : base(options)
         {
         }

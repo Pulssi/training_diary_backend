@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using training_diary_API.DTOs;
-using training_diary_API.Models;
+using trainingDiaryBackend.Dto;
+using trainingDiaryBackend.Models;
 using Microsoft.AspNetCore.Authorization;
 
-namespace training_diary_API.Controllers
+namespace trainingDiaryBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
     public class PersonController : ControllerBase
     {
-        private training_diary_dbContext _context;
+        private tddbContext _context;
 
         // Typed lambda expression for Select() method. 
         private static readonly Expression<Func<Person, PersonDto>> AsPersonDto =
@@ -28,7 +28,7 @@ namespace training_diary_API.Controllers
                 Email = x.Email,
             };
 
-        public PersonController(training_diary_dbContext context)
+        public PersonController(tddbContext context)
         {
             _context = context;
         }

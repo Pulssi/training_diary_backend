@@ -12,10 +12,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using training_diary_API.Models;
+using trainingDiaryBackend.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
-namespace training_diary_API
+namespace trainingDiaryBackend
 {
     public class Startup
     {
@@ -50,7 +50,7 @@ namespace training_diary_API
             });
 
             services.AddControllers();
-            services.AddDbContext<training_diary_dbContext>(options =>
+            services.AddDbContext<tddbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("TrainingDiaryDatabase")));
 
             // Register the Swagger generator, defining 1 or more Swagger documents

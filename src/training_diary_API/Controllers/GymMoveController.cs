@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace training_diary_API.Controllers
+namespace trainingDiaryBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

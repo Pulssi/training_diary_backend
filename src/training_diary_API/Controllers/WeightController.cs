@@ -6,18 +6,18 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using training_diary_API.Models;
+using trainingDiaryBackend.Models;
 
-namespace training_diary_API.Controllers
+namespace trainingDiaryBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
     public class WeightController : ControllerBase
     {
-        private training_diary_dbContext _context;
+        private tddbContext _context;
 
-        public WeightController(training_diary_dbContext context)
+        public WeightController(tddbContext context)
         {
             _context = context;
         }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace training_diary_API.Models
+namespace trainingDiaryBackend.Models
 {
     public partial class Person
     {
